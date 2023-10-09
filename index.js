@@ -8,7 +8,7 @@ canvas.height = window.innerHeight
 class Player {
   constructor() {
     this.velocity = {x: 0, y:0}
-
+    this.rotation = 0
     const image = new Image()
     image.src = './resources/spaceship.png'
     image.onload = () => {
@@ -23,9 +23,20 @@ class Player {
     }
   }
   draw() {
+    const newX =
+      player.position.x + player.width / 2
+    const newY =
+       player.position.y + player.height / 2
+
+    c.save()//saves current coordinates of canvas
+    c.translate(newX,newY) //moves canvas to middle of air-plane, new coords created
+    c.rotate(this.rotation) //rotate whole canvas + plane (new rotation state)
+    c.translate(-newX, -newY) //moves canvas back to original coords, cancels out previous translate
+
 
     c.drawImage(this.image, this.position.x,
       this.position.y,this.width, this.height)
+    c.restore()//restores OG coords, we will still see plane as tilted
   }
   update() {
     if(this.image) {
@@ -47,15 +58,17 @@ function animate() {
   c.fillRect(0,0, canvas.width, canvas.height)
   player.update()
 
-  player.velocity.x =
-      keys.a.pressed  && player.position.x >= 0 ? -3
-                      :
-      keys.d.pressed && player.position.x + player.width <= canvas.width ? 3 : 0
-  // if (keys.a.pressed) {
-  //   player.velocity.x = -1
-  // } else player.velocity.x = 0
+  if (keys.a.pressed && player.position.x >= 0) {
+    player.velocity.x = -3
+    player.rotation = -0.25
+  }else if (keys.d.pressed && (player.position.x + player.width <= canvas.width)) {
+    player.velocity.x = 3
+    player.rotation = 0.25
+  } else {
+    player.velocity.x = 0
+    player.rotation = 0
+  }
 }
-
 animate()
 
 window.addEventListener('keydown', ({key}) => {
