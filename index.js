@@ -45,7 +45,38 @@ class Player {
     }
   }
 }
+class Projectile {
+  constructor({position, velocity}) {
+    this.position = position
+    this.velocity = velocity
+    this.radius = 3
+  }
+  draw() {
+    c.beginPath()
+    c.arc(this.position.x, this.position.y,
+          this.radius, 0, Math.PI*2)
+    c.fillStyle = 'red'
+    c.fill()
+    c.closePath()
+  }
+  update() {
+    this.draw()
+    this.position.x+= this.velocity.x
+    this.position.y+= this.velocity.y
+  }
+}
 const player = new Player()
+const projectiles = [new Projectile({
+  position: { //where each particle spawning x,y coords are
+    x:300,
+    y:300
+  },
+  velocity: {//speed & direction of fall
+    x:0,
+    y:0
+  }
+})]
+
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -57,6 +88,10 @@ function animate() {
   c.fillStyle = 'goldenrod'
   c.fillRect(0,0, canvas.width, canvas.height)
   player.update()
+
+  projectiles.forEach(projectile => {
+    projectile.update()
+  })
 
   if (keys.a.pressed && player.position.x >= 0) {
     player.velocity.x = -3
@@ -75,13 +110,12 @@ window.addEventListener('keydown', ({key}) => {
   switch (key) {
     case 'a':
     case 'A':
-      console.log('left')
-
+    case 'ArrowLeft':
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
-      console.log('right')
+    case 'ArrowRight':
       keys.d.pressed = true
       break;
     case ' ':
@@ -93,23 +127,17 @@ window.addEventListener('keyup', ({key}) => {
   switch (key) {
     case 'a':
     case 'A':
-      console.log('left')
-
+    case 'ArrowLeft':
       keys.a.pressed = false
       break;
     case 'd':
     case 'D':
-      console.log('right')
+    case 'ArrowRight':
       keys.d.pressed = false
       break;
     case ' ':
-      console.log('space')
+      console.log('fired shot!')
+      keys.space.pressed = true
       break;
   }
 })
-// window.onresize =
-// () => {
-//   canvas.width = window.innerWidth
-//   player.position.x = 0.5*(canvas.width - player.width)
-//   player.draw()
-// }
