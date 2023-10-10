@@ -66,16 +66,8 @@ class Projectile {
   }
 }
 const player = new Player()
-const projectiles = [new Projectile({
-  position: { //where each particle spawning x,y coords are
-    x:300,
-    y:300
-  },
-  velocity: {//speed & direction of fall
-    x:0,
-    y:0
-  }
-})]
+
+const projectiles = []
 
 const keys = {//monitors keys pressed
   a: {pressed:false},
@@ -119,7 +111,17 @@ window.addEventListener('keydown', ({key}) => {
       keys.d.pressed = true
       break;
     case ' ':
-      console.log('space')
+      const newProjectile = new Projectile({
+        position: { //where each particle spawning x,y coords are
+          x:player.position.x + (player.width * .5),
+          y:player.position.y
+        },
+        velocity: {//speed & direction of fall
+          x:0,
+          y:-5
+        }
+      })
+      projectiles.push(newProjectile)
       break;
   }
 })
