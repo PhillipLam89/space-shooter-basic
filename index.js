@@ -8,7 +8,7 @@ canvas.height = window.innerHeight
 class Player {
   constructor() {
     this.velocity = {x: 0, y:0}
-
+    this.rotation = 0
     const image = new Image()
     image.src = './resources/spaceship.png'
     image.onload = () => {
@@ -23,9 +23,20 @@ class Player {
     }
   }
   draw() {
+    const newX =
+      player.position.x + player.width / 2
+    const newY =
+       player.position.y + player.height / 2
+
+    c.save()//saves current coordinates of canvas
+    c.translate(newX,newY) //moves canvas to middle of air-plane, new coords created
+    c.rotate(this.rotation) //rotate whole canvas + plane (new rotation state)
+    c.translate(-newX, -newY) //moves canvas back to original coords, cancels out previous translate
+
 
     c.drawImage(this.image, this.position.x,
       this.position.y,this.width, this.height)
+    c.restore()//restores OG coords, we will still see plane as tilted
   }
   update() {
     if(this.image) {
@@ -34,7 +45,30 @@ class Player {
     }
   }
 }
+class Projectile {
+  constructor({position, velocity}) {
+    this.position = position
+    this.velocity = velocity
+    this.radius = 5
+  }
+  draw() {
+    c.beginPath()
+    c.arc(this.position.x, this.position.y,
+          this.radius, 0, Math.PI*2)
+    c.fillStyle = 'blue'
+    c.fill()
+    c.closePath()
+  }
+  update() {
+    this.draw()
+    this.position.x+= this.velocity.x
+    this.position.y+= this.velocity.y
+  }
+}
 const player = new Player()
+
+const projectiles = []
+
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -43,36 +77,54 @@ const keys = {//monitors keys pressed
 
 function animate() {
   requestAnimationFrame(animate)
-  c.fillStyle = 'goldenrod'
+  c.fillStyle = 'bisque'
   c.fillRect(0,0, canvas.width, canvas.height)
   player.update()
 
-  player.velocity.x =
-      keys.a.pressed  && player.position.x >= 0 ? -3
-                      :
-      keys.d.pressed && player.position.x + player.width <= canvas.width ? 3 : 0
-  // if (keys.a.pressed) {
-  //   player.velocity.x = -1
-  // } else player.velocity.x = 0
-}
+  projectiles.forEach((projectile, i) => {
+    if (projectile.position.y + projectile.radius <= 0) {
+      setTimeout(() => projectiles.splice(i,1),0)
+    } else projectile.update()
+  })
 
+  if (keys.a.pressed && player.position.x >= 0) {
+    player.velocity.x = -3
+    player.rotation = -0.25
+  }else if (keys.d.pressed && (player.position.x + player.width <= canvas.width)) {
+    player.velocity.x = 3
+    player.rotation = 0.25
+  } else {
+    player.velocity.x = 0
+    player.rotation = 0
+  }
+}
 animate()
 
 window.addEventListener('keydown', ({key}) => {
   switch (key) {
     case 'a':
     case 'A':
-      console.log('left')
-
+    case 'ArrowLeft':
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
-      console.log('right')
+    case 'ArrowRight':
       keys.d.pressed = true
       break;
     case ' ':
-      console.log('space')
+
+      const generatedBullet = new Projectile({
+        position: { //where each particle spawning x,y coords are
+          x:player.position.x + (player.width * .5),
+          y:player.position.y
+        },
+        velocity: {//speed & direction of bullets
+          x:0,
+          y:-3
+        }
+      })
+      projectiles.push(generatedBullet)
       break;
   }
 })
@@ -80,23 +132,26 @@ window.addEventListener('keyup', ({key}) => {
   switch (key) {
     case 'a':
     case 'A':
-      console.log('left')
-
+    case 'ArrowLeft':
       keys.a.pressed = false
       break;
     case 'd':
     case 'D':
-      console.log('right')
+    case 'ArrowRight':
       keys.d.pressed = false
       break;
     case ' ':
-      console.log('space')
+      console.log('fired shot!')
+      keys.space.pressed = true
       break;
   }
 })
-// window.onresize =
-// () => {
-//   canvas.width = window.innerWidth
-//   player.position.x = 0.5*(canvas.width - player.width)
-//   player.draw()
-// }
+
+
+window.onresize = () =>
+{
+  canvas.width = window.innerWidth
+  player.position.x =
+        0.5*(canvas.width - player.width)
+  player.draw()
+}
