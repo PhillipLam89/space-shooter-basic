@@ -49,13 +49,13 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 3
+    this.radius = 5
   }
   draw() {
     c.beginPath()
     c.arc(this.position.x, this.position.y,
           this.radius, 0, Math.PI*2)
-    c.fillStyle = 'red'
+    c.fillStyle = 'blue'
     c.fill()
     c.closePath()
   }
@@ -77,12 +77,14 @@ const keys = {//monitors keys pressed
 
 function animate() {
   requestAnimationFrame(animate)
-  c.fillStyle = 'goldenrod'
+  c.fillStyle = 'bisque'
   c.fillRect(0,0, canvas.width, canvas.height)
   player.update()
 
-  projectiles.forEach(projectile => {
-    projectile.update()
+  projectiles.forEach((projectile, i) => {
+    if (projectile.position.y + projectile.radius <= 0) {
+      setTimeout(() => projectiles.splice(i,1),0)
+    } else projectile.update()
   })
 
   if (keys.a.pressed && player.position.x >= 0) {
@@ -111,17 +113,18 @@ window.addEventListener('keydown', ({key}) => {
       keys.d.pressed = true
       break;
     case ' ':
-      const newProjectile = new Projectile({
+
+      const generatedBullet = new Projectile({
         position: { //where each particle spawning x,y coords are
           x:player.position.x + (player.width * .5),
           y:player.position.y
         },
-        velocity: {//speed & direction of fall
+        velocity: {//speed & direction of bullets
           x:0,
-          y:-5
+          y:-3
         }
       })
-      projectiles.push(newProjectile)
+      projectiles.push(generatedBullet)
       break;
   }
 })
@@ -143,3 +146,12 @@ window.addEventListener('keyup', ({key}) => {
       break;
   }
 })
+
+
+window.onresize = () =>
+{
+  canvas.width = window.innerWidth
+  player.position.x =
+        0.5*(canvas.width - player.width)
+  player.draw()
+}
