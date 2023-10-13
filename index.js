@@ -6,14 +6,15 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 class Player {
-  constructor() {
+  constructor(imgURL) {
     this.velocity = {x: 0, y:0}
     this.rotation = 0
     const image = new Image()
-    image.src = './resources/spaceship.png'
+    image.src = imgURL ||
+         './resources/spaceship.png'
     image.onload = () => {
       this.image = image
-      const scale = .15
+      const scale = .10
       this.width = image.width * scale
       this.height= image.height * scale
       this.position = {
@@ -65,7 +66,7 @@ class Projectile {
     this.position.y+= this.velocity.y
   }
 }
-const player = new Player()
+const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
 
