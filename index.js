@@ -66,10 +66,55 @@ class Projectile {
     this.position.y+= this.velocity.y
   }
 }
+
+class Invader {
+  constructor(imgURL) {
+    this.velocity = {x: 0, y:0}
+
+    const image = new Image()
+    image.src = imgURL ||
+         './resources/invader.png'
+    image.onload = () => {
+      this.image = image
+      const scale = 1
+      this.width = image.width * scale
+      this.height= image.height * scale
+      this.position = {
+        x: canvas.width * .5 - this.width *.5,
+        y: canvas.height - (canvas.height - (this.height))
+      }
+    }
+  }
+  draw() {
+    c.drawImage(this.image, this.position.x,
+    this.position.y,this.width, this.height)
+  }
+  update() {
+    if(this.image) {
+      this.draw()
+      this.position.x+= this.velocity.x
+      //invade must also move downwards (Y-direction)
+      this.position.y+= this.velocity.y
+    }
+  }
+}
+
+class Grid {
+  constructor() {
+    this.position = {
+      x:0,y:0
+    }
+    this.velocity = {
+      x:0,y:0
+    }
+    this.invaders = [new Invader()]
+  }
+    update() {}
+}
 const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
-
+const grids = [new Grid()]
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -80,12 +125,19 @@ function animate() {
   requestAnimationFrame(animate)
   c.fillStyle = 'bisque'
   c.fillRect(0,0, canvas.width, canvas.height)
+
   player.update()
 
   projectiles.forEach((projectile, i) => {
     if (projectile.position.y + projectile.radius <= 0) {
       setTimeout(() => projectiles.splice(i,1),0)
     } else projectile.update()
+  })
+
+  grids.forEach(grid => {
+    grid.update()
+    grid.invaders.forEach(invader =>
+      invader.update())
   })
 
   if (keys.a.pressed && player.position.x >= 0) {
