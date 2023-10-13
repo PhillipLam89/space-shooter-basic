@@ -6,14 +6,15 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 class Player {
-  constructor() {
+  constructor(imgURL) {
     this.velocity = {x: 0, y:0}
     this.rotation = 0
     const image = new Image()
-    image.src = './resources/spaceship.png'
+    image.src = imgURL ||
+         './resources/spaceship.png'
     image.onload = () => {
       this.image = image
-      const scale = .15
+      const scale = .10
       this.width = image.width * scale
       this.height= image.height * scale
       this.position = {
@@ -49,12 +50,12 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 5
+    this.radius = 3
   }
   draw() {
     c.beginPath()
     c.arc(this.position.x, this.position.y,
-          this.radius, 0, Math.PI*2)
+          this.radius, 0, Math.PI * 2)
     c.fillStyle = 'blue'
     c.fill()
     c.closePath()
@@ -65,20 +66,90 @@ class Projectile {
     this.position.y+= this.velocity.y
   }
 }
-const player = new Player()
+
+class Invader {
+  constructor({imgURL, position}) {
+    this.velocity = {x: 0, y:0}
+
+    const image = new Image()
+    image.src = imgURL ||
+         './resources/invader.png'
+    image.onload = () => {
+      this.image = image
+      const scale = 1
+      this.width = image.width * scale
+      this.height= image.height * scale
+      this.position = {
+        x: position.x,
+        y: position.y
+      }
+    }
+  }
+  draw() {
+    c.drawImage(this.image, this.position.x,
+    this.position.y,this.width, this.height)
+  }
+  update({velocity}) {
+    if(this.image) {
+      this.draw()
+      this.position.x+= velocity.x
+      //invade must also move downwards (Y-direction)
+      this.position.y+= velocity.y
+    }
+  }
+}
+
+class Grid {
+  constructor() {
+    this.position = {
+      x:0,y:0
+    }
+    this.velocity = {
+      x:3,y:0
+    }
+    this.invaders = []
+
+    const rows = ~~(Math.random() * 5 + 2)
+    const columns = ~~(Math.random() * 7  + 4)
+
+    this.width = columns * 30
+
+    for (let x = 0; x < columns; x++) {
+      for (let y = 0; y < rows; y++) {
+        this.invaders.push(new Invader({
+          position : {x: x * 30,y: y * 30}
+        }))
+      }
+    }
+  }
+  update() {
+    this.position.x+= this.velocity.x
+    this.position.y+= this.velocity.y
+    // this.velocity.y = 0
+    if (this.position.x + this.width
+          >= canvas.width ||
+          !this.position.x) {
+      this.velocity.x*= -1 //bounces invaders once they hit wall
+      this.velocity.y+= 0.15
+    }
+  }
+}
+const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
-
+const grids = [new Grid()]
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
   space: {pressed: false}
 }
 
+let spamCount = 0
 function animate() {
   requestAnimationFrame(animate)
-  c.fillStyle = 'bisque'
+  c.fillStyle = 'springgreen'
   c.fillRect(0,0, canvas.width, canvas.height)
+
   player.update()
 
   projectiles.forEach((projectile, i) => {
@@ -87,11 +158,18 @@ function animate() {
     } else projectile.update()
   })
 
+  grids.forEach(grid => {
+    grid.update()
+    grid.invaders.forEach(invader =>
+      invader.update({velocity: grid.velocity}))
+  })
+
   if (keys.a.pressed && player.position.x >= 0) {
-    player.velocity.x = -3
+
+    player.velocity.x = -3 - spamCount //increases movement speed on key hold
     player.rotation = -0.25
   }else if (keys.d.pressed && (player.position.x + player.width <= canvas.width)) {
-    player.velocity.x = 3
+    player.velocity.x = 3 + spamCount //increases movement speed on key hold
     player.rotation = 0.25
   } else {
     player.velocity.x = 0
@@ -105,11 +183,13 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
+      spamCount+= 0.15
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
+      spamCount+= 0.15
       keys.d.pressed = true
       break;
     case ' ':
@@ -133,11 +213,13 @@ window.addEventListener('keyup', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
+      spamCount = 0
       keys.a.pressed = false
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
+      spamCount = 0
       keys.d.pressed = false
       break;
     case ' ':
