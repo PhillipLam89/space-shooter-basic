@@ -105,7 +105,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:1,y:0
+      x:2 ,y:0
     }
     this.invaders = []
 
@@ -156,14 +156,28 @@ function animate() {
 
   projectiles.forEach((projectile, i) => {
     if (projectile.position.y + projectile.radius <= 0) {
-      setTimeout(() => projectiles.splice(i,1),0)
+      setTimeout(() => {
+        projectiles.splice(i,1)
+      },0)
     } else projectile.update()
   })
 
-  grids.forEach(grid => {
+  grids.forEach((grid) => {
     grid.update()
-    grid.invaders.forEach(invader =>
-      invader.update({velocity: grid.velocity}))
+    grid.invaders.forEach((invader,i) => {
+      invader.update({velocity:grid.velocity})
+      projectiles.forEach((projectile,j) => {
+        if (projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
+            projectile.position.x + projectile.radius >= invader.position.x &&
+            projectile.position.x - projectile.radius <= invader.position.x) {
+           setTimeout(() => {
+              grid.invaders.splice(i,1)
+              projectiles.splice(j,1)
+           })
+        }
+      })
+    })
+
   })
 
   if (keys.a.pressed && player.position.x >= 0) {
