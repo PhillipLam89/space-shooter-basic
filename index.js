@@ -105,7 +105,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:3,y:0
+      x:1,y:0
     }
     this.invaders = []
 
@@ -146,9 +146,10 @@ const keys = {//monitors keys pressed
 
 let spamCount = 0
 let frames = 0
+let randomInterval = ~~(Math.random() * 500) + 500
 function animate() {
   requestAnimationFrame(animate)
-  c.fillStyle = 'springgreen'
+  c.fillStyle = 'darkgrey'
   c.fillRect(0,0, canvas.width, canvas.height)
 
   player.update()
@@ -176,8 +177,12 @@ function animate() {
     player.velocity.x = 0
     player.rotation = 0
   }
-  if (frames % 1000 === 0) {
+  if (frames % randomInterval === 0) {
     grids.push(new Grid())
+    //will generate a group of enemies at random time intervals
+    //re-assigning randomInterval will make sure every group is generated at a random time
+    randomInterval = ~~(Math.random() * 500) + 500
+    frames = 0
   }
   frames++
 }
