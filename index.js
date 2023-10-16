@@ -109,8 +109,8 @@ class Grid {
     }
     this.invaders = []
 
-    const rows = ~~(Math.random() * 5 + 2)
-    const columns = ~~(Math.random() * 7  + 4)
+    const rows = ~~(Math.random() * 5 + 2) //height
+    const columns = ~~(Math.random() * 7  + 4) //width
 
     this.width = columns * 30
 
@@ -125,19 +125,19 @@ class Grid {
   update() {
     this.position.x+= this.velocity.x
     this.position.y+= this.velocity.y
-    // this.velocity.y = 0
+    this.velocity.y = 0
     if (this.position.x + this.width
           >= canvas.width ||
           !this.position.x) {
       this.velocity.x*= -1 //bounces invaders once they hit wall
-      this.velocity.y+= 0.15
+      this.velocity.y = 20
     }
   }
 }
 const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
-const grids = [new Grid()]
+const grids = []
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -145,6 +145,7 @@ const keys = {//monitors keys pressed
 }
 
 let spamCount = 0
+let frames = 0
 function animate() {
   requestAnimationFrame(animate)
   c.fillStyle = 'springgreen'
@@ -166,7 +167,7 @@ function animate() {
 
   if (keys.a.pressed && player.position.x >= 0) {
 
-    player.velocity.x = -3 - spamCount //increases movement speed on key hold
+    player.velocity.x = -2 - spamCount //increases movement speed on key hold
     player.rotation = -0.25
   }else if (keys.d.pressed && (player.position.x + player.width <= canvas.width)) {
     player.velocity.x = 3 + spamCount //increases movement speed on key hold
@@ -175,6 +176,10 @@ function animate() {
     player.velocity.x = 0
     player.rotation = 0
   }
+  if (frames % 1000 === 0) {
+    grids.push(new Grid())
+  }
+  frames++
 }
 animate()
 
@@ -183,13 +188,13 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
-      spamCount+= 0.15
+      spamCount+= 0.20
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
-      spamCount+= 0.15
+      spamCount+= 0.25
       keys.d.pressed = true
       break;
     case ' ':
