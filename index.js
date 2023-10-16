@@ -50,7 +50,7 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 3
+    this.radius = 5
   }
   draw() {
     c.beginPath()
@@ -105,12 +105,12 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:3,y:0
+      x:1 ,y:0
     }
     this.invaders = []
 
-    const rows = ~~(Math.random() * 5 + 2)
-    const columns = ~~(Math.random() * 7  + 4)
+    const rows = ~~(Math.random() * 5 + 2) //height
+    const columns = ~~(Math.random() * 7  + 4) //width
 
     this.width = columns * 30
 
@@ -125,19 +125,19 @@ class Grid {
   update() {
     this.position.x+= this.velocity.x
     this.position.y+= this.velocity.y
-    // this.velocity.y = 0
+    this.velocity.y = 0
     if (this.position.x + this.width
           >= canvas.width ||
           !this.position.x) {
       this.velocity.x*= -1 //bounces invaders once they hit wall
-      this.velocity.y+= 0.15
+      this.velocity.y = 20
     }
   }
 }
 const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
-const grids = [new Grid()]
+const grids = []
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -145,28 +145,51 @@ const keys = {//monitors keys pressed
 }
 
 let spamCount = 0
+let frames = 0
+let randomInterval = ~~(Math.random() * 500) + 500
 function animate() {
   requestAnimationFrame(animate)
-  c.fillStyle = 'springgreen'
+  c.fillStyle = 'darkgrey'
   c.fillRect(0,0, canvas.width, canvas.height)
 
   player.update()
 
   projectiles.forEach((projectile, i) => {
     if (projectile.position.y + projectile.radius <= 0) {
-      setTimeout(() => projectiles.splice(i,1),0)
+      setTimeout(() => {
+        projectiles.splice(i,1)
+      },0)
     } else projectile.update()
   })
 
-  grids.forEach(grid => {
+  grids.forEach((grid) => {
     grid.update()
-    grid.invaders.forEach(invader =>
-      invader.update({velocity: grid.velocity}))
+    grid.invaders.forEach((invader,i) => {
+      invader.update({velocity:grid.velocity})
+      projectiles.forEach((projectile,j) => {
+        if (projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
+            projectile.position.x + projectile.radius >= invader.position.x &&
+            projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
+            projectile.position.y + projectile.radius >= invader.position.y)
+             {
+           setTimeout(() => {
+              const invaderFound = grid.invaders.find(invader2 =>invader2 === invader)
+              const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
+              if (invaderFound && projectileFound) {
+                grid.invaders.splice(i,1)
+                projectiles.splice(j,1)
+              }
+
+           })
+        }
+      })
+    })
+
   })
 
   if (keys.a.pressed && player.position.x >= 0) {
 
-    player.velocity.x = -3 - spamCount //increases movement speed on key hold
+    player.velocity.x = -2 - spamCount //increases movement speed on key hold
     player.rotation = -0.25
   }else if (keys.d.pressed && (player.position.x + player.width <= canvas.width)) {
     player.velocity.x = 3 + spamCount //increases movement speed on key hold
@@ -175,6 +198,14 @@ function animate() {
     player.velocity.x = 0
     player.rotation = 0
   }
+  if (frames % randomInterval === 0) {
+    grids.push(new Grid())
+    //will generate a group of enemies at random time intervals
+    //re-assigning randomInterval will make sure every group is generated at a random time
+    randomInterval = ~~(Math.random() * 500) + 500
+    frames = 0
+  }
+  frames++
 }
 animate()
 
@@ -183,13 +214,13 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
-      spamCount+= 0.15
+      spamCount+= 0.20
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
-      spamCount+= 0.15
+      spamCount+= 0.25
       keys.d.pressed = true
       break;
     case ' ':
@@ -205,6 +236,7 @@ window.addEventListener('keydown', ({key}) => {
         }
       })
       projectiles.push(generatedBullet)
+      keys.space.pressed = true
       break;
   }
 })
@@ -224,7 +256,7 @@ window.addEventListener('keyup', ({key}) => {
       break;
     case ' ':
       console.log('fired shot!')
-      keys.space.pressed = true
+      keys.space.pressed = false
       break;
   }
 })
