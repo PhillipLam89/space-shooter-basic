@@ -50,7 +50,7 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 3
+    this.radius = 5
   }
   draw() {
     c.beginPath()
@@ -105,7 +105,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:2 ,y:0
+      x:1 ,y:0
     }
     this.invaders = []
 
@@ -169,10 +169,17 @@ function animate() {
       projectiles.forEach((projectile,j) => {
         if (projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
             projectile.position.x + projectile.radius >= invader.position.x &&
-            projectile.position.x - projectile.radius <= invader.position.x) {
+            projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
+            projectile.position.y + projectile.radius >= invader.position.y)
+             {
            setTimeout(() => {
-              grid.invaders.splice(i,1)
-              projectiles.splice(j,1)
+              const invaderFound = grid.invaders.find(invader2 =>invader2 === invader)
+              const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
+              if (invaderFound && projectileFound) {
+                grid.invaders.splice(i,1)
+                projectiles.splice(j,1)
+              }
+
            })
         }
       })
@@ -229,6 +236,7 @@ window.addEventListener('keydown', ({key}) => {
         }
       })
       projectiles.push(generatedBullet)
+      keys.space.pressed = true
       break;
   }
 })
@@ -248,7 +256,7 @@ window.addEventListener('keyup', ({key}) => {
       break;
     case ' ':
       console.log('fired shot!')
-      keys.space.pressed = true
+      keys.space.pressed = false
       break;
   }
 })
