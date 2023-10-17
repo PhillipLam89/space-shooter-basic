@@ -162,7 +162,7 @@ function animate() {
     } else projectile.update()
   })
 
-  grids.forEach((grid) => {
+  grids.forEach((grid, gridIndex) => {
     grid.update()
     grid.invaders.forEach((invader,i) => {
       invader.update({velocity:grid.velocity})
@@ -175,9 +175,20 @@ function animate() {
            setTimeout(() => {
               const invaderFound = grid.invaders.find(invader2 =>invader2 === invader)
               const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
+              // removes projectile & the corresponding enemy that it hits
               if (invaderFound && projectileFound) {
                 grid.invaders.splice(i,1)
                 projectiles.splice(j,1)
+                if (grid.invaders.length) {
+                  const firstInvader = grid.invaders[0]
+                  const lastInvader = grid.invaders[grid.invaders.length - 1]
+
+                  grid.width = lastInvader.position.x - firstInvader.position.x + lastInvader.width
+                  grid.position.x = firstInvader.position.x
+                } else {
+                    //removes empty arrays (groups) of enemies that have all been killed (memory efficient)
+                    grids.splice(gridIndex,1)
+                }
               }
 
            })
