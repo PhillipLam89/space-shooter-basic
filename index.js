@@ -173,7 +173,7 @@ const keys = {//monitors keys pressed
   d: {pressed:false},
   space: {pressed: false}
 }
-
+let bulletCount = 15
 let spamCount = 0
 let frames = 0
 let hits = 0
@@ -270,8 +270,11 @@ function animate() {
     frames = 0
   }
   frames++
+
+
 }
 animate()
+
 
 window.addEventListener('keydown', ({key}) => {
   switch (key) {
@@ -288,7 +291,8 @@ window.addEventListener('keydown', ({key}) => {
       keys.d.pressed = true
       break;
     case ' ':
-
+      // prevents unlimited ammo
+      // if (!bulletCount) return
       const generatedBullet = new Projectile({
         position: { //where each particle spawning x,y coords are
           x:player.position.x + (player.width * .5),
@@ -301,6 +305,8 @@ window.addEventListener('keydown', ({key}) => {
       })
       projectiles.push(generatedBullet)
       keys.space.pressed = true
+      bulletCount--
+      !bulletCount && setTimeout(() => bulletCount = 15, 3000)
       break;
   }
 })
