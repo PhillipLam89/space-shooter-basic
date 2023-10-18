@@ -50,7 +50,7 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 5
+    this.radius = 2
   }
   draw() {
     c.beginPath()
@@ -97,8 +97,37 @@ class Invader {
       this.position.y+= velocity.y
     }
   }
-}
+  shoot(invaderProjectilesArr) { //takes an array of projectiles
+    invaderProjectilesArr.push(new InvaderProjectile(
+    {
+      position: {x: this.position.x + this.width*0.5,
+                  y: this.position.y + this.height},
+      velocity: {x: 0, y:4}
+    }
+    ))
 
+    }
+}
+class InvaderProjectile {
+  constructor({position, velocity}) {
+    this.position = position
+    this.velocity = velocity
+    this.width = 3
+    this.height = 10
+  }
+  draw() {
+    c.fillStyle = 'orange'
+    c.fillRect(this.position.x,
+               this.position.y,
+               this.width,
+               this.height)
+  }
+  update() {
+    this.draw()
+    this.position.x+= this.velocity.x
+    this.position.y+= this.velocity.y
+  }
+}
 class Grid {
   constructor() {
     this.position = {
@@ -138,6 +167,7 @@ const player = new Player('https://civilengineering-softstudies.com/wp-content/u
 
 const projectiles = []
 const grids = []
+const invaderProjectiles = []
 const keys = {//monitors keys pressed
   a: {pressed:false},
   d: {pressed:false},
@@ -153,6 +183,8 @@ function animate() {
   c.fillRect(0,0, canvas.width, canvas.height)
 
   player.update()
+
+
 
   projectiles.forEach((projectile, i) => {
     if (projectile.position.y + projectile.radius <= 0) {
