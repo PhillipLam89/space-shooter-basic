@@ -116,7 +116,7 @@ class InvaderProjectile {
     this.height = 10
   }
   draw() {
-    c.fillStyle = 'orange'
+    c.fillStyle = 'red'
     c.fillRect(this.position.x,
                this.position.y,
                this.width,
@@ -176,6 +176,7 @@ const keys = {//monitors keys pressed
 
 let spamCount = 0
 let frames = 0
+let hits = 0
 let randomInterval = ~~(Math.random() * 500) + 500
 function animate() {
   requestAnimationFrame(animate)
@@ -183,7 +184,20 @@ function animate() {
   c.fillRect(0,0, canvas.width, canvas.height)
 
   player.update()
+  invaderProjectiles.forEach((projectile,index) => {
+    if (projectile.position.y + projectile.height >= canvas.height) {
+      setTimeout(() => {
+        invaderProjectiles.splice(index,1)
+      },0)
+    } else projectile.update()
+    if (projectile.position.y + projectile.height >= player.position.y
+        && projectile.position.x + projectile.width <= player.position.x + player.width
+        && projectile.position.x + projectile.width >= player.position.x) {
+          //hits player if x & y coords match the players current position
+          invaderProjectiles.splice(index,1) //prevents bullet from hitting you more than once
 
+    }
+  })
 
 
   projectiles.forEach((projectile, i) => {
@@ -196,6 +210,13 @@ function animate() {
 
   grids.forEach((grid, gridIndex) => {
     grid.update()
+    //spawns invader projectiles
+    if (frames % 200 === 0 && grid.invaders.length) {
+      grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
+    }
+    // if (frames % 340 === 0 && grid.invaders.length) {
+    //   grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
+    // }
     grid.invaders.forEach((invader,i) => {
       invader.update({velocity:grid.velocity})
       projectiles.forEach((projectile,j) => {
