@@ -49,7 +49,7 @@ class Projectile {
     c.beginPath()
     c.arc(this.position.x, this.position.y,
           this.radius, 0, Math.PI * 2)
-    c.fillStyle = 'blue'
+    c.fillStyle = 'goldenrod'
     c.fill()
     c.closePath()
   }
@@ -65,11 +65,12 @@ class ParticleExplosion {
     this.velocity = velocity
     this.radius = radius
     this.color = color
+
   }
   draw() {
     c.beginPath()
     c.arc(this.position.x, this.position.y,
-          this.radius, 0, Math.PI * 2)
+          this.radius, 0, Math.PI)
     c.fillStyle = this.color
     c.fill()
     c.closePath()
