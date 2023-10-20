@@ -27,7 +27,7 @@ window.addEventListener('keydown', ({key}) => {
       })
       projectiles.push(generatedBullet)
       keys.space.pressed = true
-      // bulletCount--
+      bulletCount--
       //when bullet is empty, take 3 seconds to reload ammo
       !bulletCount && setTimeout(() => bulletCount = 50, 3000)
       break;
