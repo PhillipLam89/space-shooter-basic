@@ -55,6 +55,7 @@ window.addEventListener('keyup', ({key}) => {
 })
 
 
+
 window.onresize = () =>
 {
   canvas.width = window.innerWidth
@@ -62,3 +63,6 @@ window.onresize = () =>
         0.5*(canvas.width - player.width)
   player.draw()
 }
+window.onkeypress = (e) => e.key == ' ' && e.preventDefault()
+
+ //prevents auto scrolling behavior of spacebar key

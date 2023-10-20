@@ -12,25 +12,25 @@ class Player {
       this.height= image.height * scale
       this.position = {
         x: canvas.width * .5 - this.width *.5,
-        y: canvas.height - this.height - 20
+        y: canvas.height - this.height - 10
       }
     }
   }
   draw() {
-    // const newX =
-    //   player.position.x + player.width / 2
-    // const newY =
-    //    player.position.y + player.height / 2
+    const newX =
+      player.position.x + player.width / 2
+    const newY =
+       player.position.y + player.height / 2
 
-    // c.save()//saves current coordinates of canvas
-    // c.translate(newX,newY) //moves canvas to middle of air-plane, new coords created
-    // c.rotate(this.rotation) //rotate whole canvas + plane (new rotation state)
-    // c.translate(-newX, -newY) //moves canvas back to original coords, cancels out previous translate
+    c.save()//saves current coordinates of canvas
+    c.translate(newX,newY) //moves canvas to middle of air-plane, new coords created
+    c.rotate(this.rotation) //rotate whole canvas + plane (new rotation state)
+    c.translate(-newX, -newY) //moves canvas back to original coords, cancels out previous translate
 
 
     c.drawImage(this.image, this.position.x,
       this.position.y,this.width, this.height)
-    // c.restore()//restores OG coords, we will still see plane as tilted
+    c.restore()//restores OG coords, we will still see plane as tilted
   }
   update() {
     if(this.image) {
@@ -125,8 +125,8 @@ class InvaderProjectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.width = 3
-    this.height = 10
+    this.width = 9
+    this.height = 45
   }
   draw() {
     c.fillStyle = 'red'
@@ -167,12 +167,12 @@ class Grid {
   update() {
     this.position.x+= this.velocity.x
     this.position.y+= this.velocity.y
-    this.velocity.y = 0
+    // this.velocity.y = 0
     if (this.position.x + this.width
           >= canvas.width ||
           !this.position.x) {
       this.velocity.x*= -1 //bounces invaders once they hit wall
-      this.velocity.y = 20
+      this.velocity.y+= 0.02
     }
   }
 }

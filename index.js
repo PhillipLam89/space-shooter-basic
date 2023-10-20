@@ -20,6 +20,7 @@ let bulletCount = 50
 let spamCount = 0
 let frames = 0
 let hits = 0
+const particles = []
 let randomInterval = ~~(Math.random() * 500) + 500
 function animate() {
   requestAnimationFrame(animate)
@@ -27,6 +28,7 @@ function animate() {
   c.fillRect(0,0, canvas.width, canvas.height)
 
   player.update()
+  particles.forEach(particleExplosion => particleExplosion.update())
   invaderProjectiles.forEach((projectile,index) => {
     if (projectile.position.y + projectile.height >= canvas.height) {
       setTimeout(() => {
@@ -67,7 +69,23 @@ function animate() {
             projectile.position.x + projectile.radius >= invader.position.x &&
             projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
             projectile.position.y + projectile.radius >= invader.position.y)
-             {
+          {
+    //when hit, trigger enemy explosion!
+    for (let i = 0; i < 15; i++) {
+        particles.push(new ParticleExplosion({
+          position: {x: invader.position.x + invader.width * .5,
+                     y: invader.position.y + invader.height * .5
+                    },
+          velocity: {
+                    x: (Math.random() -.5)*2,
+                    y: (Math.random() -.5)*2
+                    },
+          radius: Math.random() * 3,
+          color: 'chartreuse'
+        }))
+        //setTime allows particles to be erased a few secs after exploding!
+        setTimeout(() => particles.splice(i,1), 2000)
+      }
            setTimeout(() => {
               const invaderFound = grid.invaders.find(invader2 =>invader2 === invader)
               const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
