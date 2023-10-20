@@ -9,7 +9,7 @@ canvas.height = window.innerHeight
 const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
 
 const projectiles = []
-const grids = [new Grid()]
+const grids = []
 const invaderProjectiles = []
 const keys = {//monitors keys pressed
   a: {pressed:false},
@@ -21,6 +21,25 @@ let spamCount = 0
 let frames = 0
 let hits = 0
 const particles = []
+
+function createParticles({object,color}, explodsionPieces = 4, initX = 0, initY = 0) {
+  for (let i = 0; i < explodsionPieces; i++) {
+  particles.push(new ParticleExplosion({
+    position: {x: initX + object.position.x + object.width * .5,
+              y: initY + object.position.y + object.height * .5
+              },
+    velocity: {
+              x: (Math.random() -.5)*2,
+              y: (Math.random() -.5)*2
+              },
+    radius: Math.random() * 3.5,
+    color: color || 'chartreuse'
+  }))
+    //setTime allows particles to be erased a few secs after exploding!
+    setTimeout(() => particles.splice(i,explodsionPieces), ~~(Math.random() * 2000) + 1000)
+  }
+}
+
 let randomInterval = ~~(Math.random() * 500) + 500
 function animate() {
   requestAnimationFrame(animate)
@@ -40,7 +59,10 @@ function animate() {
         && projectile.position.x + projectile.width >= player.position.x) {
           //hits player if x & y coords match the players current position
           invaderProjectiles.splice(index,1) //prevents bullet from hitting you more than once
-
+          createParticles({
+            object: player,
+            color: 'red'
+          },10,20, -player.height)
     }
   })
 
@@ -77,21 +99,9 @@ function animate() {
           const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
           // removes projectile & the corresponding enemy that it hits
           if (invaderFound && projectileFound) {
-              for (let i = 0; i < 2; i++) {
-                particles.push(new ParticleExplosion({
-                  position: {x: invader.position.x + invader.width * .5,
-                              y: invader.position.y + invader.height * .5
-                            },
-                  velocity: {
-                            x: (Math.random() -.5)*2,
-                            y: (Math.random() -.5)*2
-                            },
-                  radius: Math.random() * 3.5,
-                  color: 'chartreuse'
-                }))
-                //setTime allows particles to be erased a few secs after exploding!
-                setTimeout(() => particles.splice(i,1), 1000)
-              }
+            createParticles({
+              object: invader
+            })
             grid.invaders.splice(i,1)
             projectiles.splice(j,1)
             if (grid.invaders.length) {
