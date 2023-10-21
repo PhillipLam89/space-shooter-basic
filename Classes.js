@@ -43,7 +43,7 @@ class Projectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.radius = 2
+    this.radius = 5
   }
   draw() {
     c.beginPath()
@@ -116,7 +116,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: 0, y:4}
+      velocity: {x: 0, y:3}
     }
     ))
 
@@ -174,7 +174,7 @@ class Grid {
           >= canvas.width ||
           !this.position.x) {
       this.velocity.x*= -1 //bounces invaders once they hit wall
-      this.velocity.y+= 0.02
+      this.velocity.y+= .11
     }
   }
 }
@@ -214,4 +214,21 @@ function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
     //draws the paths created above
     ctx.stroke();
     ctx.restore();
+}
+let starsArray = []
+function galacticBackgroundStars(starCount) {
+    for (let i = 0; i < starCount; i++) {
+  starsArray.push(new ParticleExplosion({
+    position: {x: Math.random() * canvas.width,
+              y: Math.random() * canvas.height
+              },
+    velocity: {
+              x: 0,
+              y: 1
+              },
+    radius: Math.random() * 3,
+    color: 'white'
+  }))
+    setTimeout(() => starsArray.splice(i,1) ,1000)
+  }
 }

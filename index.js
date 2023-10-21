@@ -21,6 +21,9 @@ let spamCount = 0
 let frames = 0
 let hits = 0
 const particles = []
+let randomInterval = ~~(Math.random() * 500) + 500
+
+
 
 function createParticles({object,color}, explodsionPieces = 4, initX = 0, initY = 0) {
   for (let i = 0; i < explodsionPieces; i++) {
@@ -40,11 +43,18 @@ function createParticles({object,color}, explodsionPieces = 4, initX = 0, initY 
   }
 }
 
-let randomInterval = ~~(Math.random() * 500) + 500
+
 function animate() {
   requestAnimationFrame(animate)
   c.fillStyle = 'black'
   c.fillRect(0,0, canvas.width, canvas.height)
+  galacticBackgroundStars(1)
+  if (starsArray) {
+    starsArray.forEach(star => star.update())
+
+  }
+  //renders stars in background falling
+
 
   player.update()
   particles.forEach(particleExplosion => particleExplosion.update())
