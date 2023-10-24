@@ -22,7 +22,10 @@ let frames = 0
 let hits = 0
 const particles = []
 let randomInterval = ~~(Math.random() * 500) + 500
-
+let game = {
+  over: false,
+  active: true
+}
 
 
 function createParticles({object,color}, explodsionPieces = 5, initX = 0, initY = 0) {
@@ -45,6 +48,7 @@ function createParticles({object,color}, explodsionPieces = 5, initX = 0, initY 
 
 
 function animate() {
+  if (!game.active) return
   requestAnimationFrame(animate)
   c.fillStyle = 'black'
   c.fillRect(0,0, canvas.width, canvas.height)
@@ -62,7 +66,13 @@ function animate() {
     if (projectile.position.y + projectile.height >= canvas.height) {
       setTimeout(() => {
         invaderProjectiles.splice(index,1)
+        player.opacity = 0
+        game.over = true
       },0)
+
+      setTimeout(() => {
+        game.active = false
+      },2000)
     } else projectile.update()
     if (projectile.position.y + projectile.height >= player.position.y
         && projectile.position.x + projectile.width <= player.position.x + player.width
@@ -152,5 +162,9 @@ function animate() {
     frames = 0
   }
   frames++
+//  if (game.over) {
+//     document.querySelector('canvas').remove()
+//     alert('LOSER!')
+//  }
 }
 animate()

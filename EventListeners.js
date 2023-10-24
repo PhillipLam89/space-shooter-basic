@@ -1,4 +1,8 @@
 window.addEventListener('keydown', ({key}) => {
+  if (game.over) {
+    return
+  } //once player is hit, do not allow player to shoot
+
   switch (key) {
     case 'a':
     case 'A':
@@ -34,6 +38,7 @@ window.addEventListener('keydown', ({key}) => {
   }
 })
 window.addEventListener('keyup', ({key}) => {
+
   switch (key) {
     case 'a':
     case 'A':
