@@ -25,7 +25,7 @@ let randomInterval = ~~(Math.random() * 500) + 500
 
 
 
-function createParticles({object,color}, explodsionPieces = 4, initX = 0, initY = 0) {
+function createParticles({object,color}, explodsionPieces = 5, initX = 0, initY = 0) {
   for (let i = 0; i < explodsionPieces; i++) {
   particles.push(new ParticleExplosion({
     position: {x: initX + object.position.x + object.width * .5,
@@ -35,7 +35,7 @@ function createParticles({object,color}, explodsionPieces = 4, initX = 0, initY 
               x: (Math.random() -.5)*2,
               y: (Math.random() -.5)*2
               },
-    radius: Math.random() * 3.5,
+    radius: Math.random() * 5.5,
     color: color || 'chartreuse'
   }))
     //setTime allows particles to be erased a few secs after exploding!
@@ -58,7 +58,7 @@ function animate() {
 
   player.update()
   particles.forEach(particleExplosion => particleExplosion.update())
-  invaderProjectiles.forEach((projectile,index) => {
+  invaderProjectiles.forEach((projectile,index,arr) => {
     if (projectile.position.y + projectile.height >= canvas.height) {
       setTimeout(() => {
         invaderProjectiles.splice(index,1)
@@ -68,11 +68,11 @@ function animate() {
         && projectile.position.x + projectile.width <= player.position.x + player.width
         && projectile.position.x + projectile.width >= player.position.x) {
           //hits player if x & y coords match the players current position
-          invaderProjectiles.splice(index,1) //prevents bullet from hitting you more than once
+          // arr.splice(index,1) //prevents bullet from hitting you more than once
           createParticles({
             object: player,
             color: 'red'
-          },10,20, -player.height)
+          },5,20, -player.height)
     }
   })
 

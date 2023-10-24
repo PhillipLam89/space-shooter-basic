@@ -116,7 +116,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: 0, y:3}
+      velocity: {x: 0, y:2}
     }
     ))
 
@@ -169,12 +169,12 @@ class Grid {
   update() {
     this.position.x+= this.velocity.x
     this.position.y+= this.velocity.y
-    // this.velocity.y = 0
+    this.velocity.y = 0
     if (this.position.x + this.width
           >= canvas.width ||
           !this.position.x) {
       this.velocity.x*= -1 //bounces invaders once they hit wall
-      this.velocity.y+= .11
+      this.velocity.y = 30
     }
   }
 }
