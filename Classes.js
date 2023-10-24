@@ -2,6 +2,7 @@ class Player {
   constructor(imgURL) {
     this.velocity = {x: 0, y:0}
     this.rotation = 0
+    this.opacity = 1
     const image = new Image()
     image.src = imgURL ||
          './resources/spaceship.png'
@@ -23,6 +24,7 @@ class Player {
        player.position.y + player.height / 2
 
     c.save()//saves current coordinates of canvas
+    c.globalAlpha = this.opacity
     c.translate(newX,newY) //moves canvas to middle of air-plane, new coords created
     c.rotate(this.rotation) //rotate whole canvas + plane (new rotation state)
     c.translate(-newX, -newY) //moves canvas back to original coords, cancels out previous translate
