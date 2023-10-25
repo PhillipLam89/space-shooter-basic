@@ -7,7 +7,7 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
-      spamCount+= 0.20
+      spamCount+= 0.25
       keys.a.pressed = true
       break;
     case 'd':
@@ -31,7 +31,7 @@ window.addEventListener('keydown', ({key}) => {
       })
       projectiles.push(generatedBullet)
       keys.space.pressed = true
-      // bulletCount--
+      bulletCount--
       //when bullet is empty, take 3 seconds to reload ammo
       !bulletCount && setTimeout(() => bulletCount = 50, 3000)
       break;

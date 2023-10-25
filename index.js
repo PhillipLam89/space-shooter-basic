@@ -2,6 +2,9 @@ const canvas =
 document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+const score = document.getElementById('scorePoints')
+
+
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
@@ -66,13 +69,12 @@ function animate() {
     if (projectile.position.y + projectile.height >= canvas.height) {
       setTimeout(() => {
         invaderProjectiles.splice(index,1)
-        player.opacity = 0
-        game.over = true
+
       },0)
 
-      setTimeout(() => {
-        game.active = false
-      },2000)
+      // setTimeout(() => {
+      //   game.active = false
+      // },2000)
     } else projectile.update()
     if (projectile.position.y + projectile.height >= player.position.y
         && projectile.position.x + projectile.width <= player.position.x + player.width
@@ -83,6 +85,15 @@ function animate() {
             object: player,
             color: 'red'
           },5,20, -player.height)
+          player.opacity = 0
+          game.over = true
+
+          setTimeout(() => {
+            canvas.remove()
+            document.body.innerHTML = `<h5>YOU LOST YOU SUCK! THANKS FOR PLAYING MR.PHILIP'S GAME! </h5>
+                                       <h2>Score: ${score.textContent} Points!</h2>`
+            document.body.classList.add('gameLost')
+          }, 1200)
     }
   })
 
@@ -119,6 +130,7 @@ function animate() {
           const projectileFound = projectiles.find(projectile2 => projectile2 === projectile)
           // removes projectile & the corresponding enemy that it hits
           if (invaderFound && projectileFound) {
+            score.textContent++
             createParticles({
               object: invader
             })
