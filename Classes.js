@@ -72,7 +72,7 @@ class ParticleExplosion {
   draw() {
     c.beginPath()
     c.arc(this.position.x, this.position.y,
-          this.radius, 0, Math.PI)
+          this.radius, 0, Math.PI*2 / 4)
     c.fillStyle = this.color
     c.fill()
     c.closePath()
