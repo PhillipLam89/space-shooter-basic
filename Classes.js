@@ -118,7 +118,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: 0, y:2}
+      velocity: {x: 0, y:4}
     }
     ))
 

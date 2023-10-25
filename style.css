@@ -3,12 +3,14 @@ body {
   box-sizing: border-box;
   min-height: 100dvh;
 }
-
+canvas {
+  transition: all 2s;
+}
 .gameLost {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 
 }

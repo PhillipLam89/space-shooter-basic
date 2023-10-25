@@ -87,13 +87,13 @@ function animate() {
           },5,20, -player.height)
           player.opacity = 0
           game.over = true
-
+          canvas.style.opacity = 0
           setTimeout(() => {
             canvas.remove()
             document.body.innerHTML = `<h5>YOU LOST YOU SUCK! THANKS FOR PLAYING MR.PHILIP'S GAME! </h5>
                                        <h2>Score: ${score.textContent} Points!</h2>`
             document.body.classList.add('gameLost')
-          }, 1200)
+          }, 2000)
     }
   })
 
@@ -112,9 +112,9 @@ function animate() {
     if (frames % 200 === 0 && grid.invaders.length) {
       grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
     }
-    // if (frames % 340 === 0 && grid.invaders.length) {
-    //   grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
-    // }
+    if (frames % 340 === 0 && grid.invaders.length) {
+      grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
+    }
     grid.invaders.forEach((invader,i) => {
       invader.update({velocity:grid.velocity})
       projectiles.forEach((projectile,j) => {
