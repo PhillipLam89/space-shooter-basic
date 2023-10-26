@@ -4,7 +4,6 @@ const c = canvas.getContext('2d')
 
 const score = document.getElementById('scorePoints')
 
-
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
@@ -55,7 +54,7 @@ function animate() {
   requestAnimationFrame(animate)
   c.fillStyle = 'black'
   c.fillRect(0,0, canvas.width, canvas.height)
-  galacticBackgroundStars(1)
+  galacticBackgroundStars(2)
   if (starsArray) {
     starsArray.forEach(star => star.update())
 
@@ -109,12 +108,11 @@ function animate() {
   grids.forEach((grid, gridIndex) => {
     grid.update()
     //spawns invader projectiles
-    if (frames % 200 === 0 && grid.invaders.length) {
+    const spawnTime = frames % 200 === 0 || frames % 300 === 0
+    if (spawnTime && grid.invaders.length) {
       grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
     }
-    if (frames % 340 === 0 && grid.invaders.length) {
-      grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
-    }
+
     grid.invaders.forEach((invader,i) => {
       invader.update({velocity:grid.velocity})
       projectiles.forEach((projectile,j) => {
