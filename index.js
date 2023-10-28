@@ -13,7 +13,7 @@ canvas.height = window.innerHeight
 
 
 // const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
-const player = new Player('')
+const player = new Player()
 
 const projectiles = []
 const grids = []
