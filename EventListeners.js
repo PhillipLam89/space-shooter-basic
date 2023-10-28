@@ -40,10 +40,10 @@ window.addEventListener('keydown', ({key}) => {
         bulletsCountDiv.textContent = 'NO AMMO, RELOADING!'
       } else {shootSound.play()}
       !bulletCount && setTimeout(() => {
-        bulletCount = 30
+        bulletCount = 20
         bulletsCountDiv.textContent = bulletCount
         bulletsCountDiv.parentElement.classList.toggle('hasBlink')
-      }, 3000)
+      }, 5000)
       break;
   }
 })
