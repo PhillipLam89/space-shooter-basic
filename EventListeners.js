@@ -1,3 +1,4 @@
+const shootSound = new Audio('./resources/audio/shoot.wav')
 window.addEventListener('keydown', ({key}) => {
   if (game.over) {
     return
@@ -37,7 +38,7 @@ window.addEventListener('keydown', ({key}) => {
       if (!bulletCount) {
         bulletsCountDiv.parentElement.classList.toggle('hasBlink')
         bulletsCountDiv.textContent = 'NO AMMO, RELOADING!'
-      }
+      } else {shootSound.play()}
       !bulletCount && setTimeout(() => {
         bulletCount = 30
         bulletsCountDiv.textContent = bulletCount

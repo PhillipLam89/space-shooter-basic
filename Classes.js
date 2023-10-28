@@ -122,7 +122,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: Math.random() * 2 * negOrPositive(), y:3.5}
+      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:3.5}
     }
     ))
 
@@ -147,6 +147,7 @@ class InvaderProjectile {
     this.draw()
     this.position.x+= this.velocity.x
     this.position.y+= this.velocity.y
+
   }
 }
 class Grid {
