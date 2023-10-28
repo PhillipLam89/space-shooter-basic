@@ -39,7 +39,7 @@ window.addEventListener('keydown', ({key}) => {
         bulletsCountDiv.textContent = 'NO AMMO, RELOADING!'
       }
       !bulletCount && setTimeout(() => {
-        bulletCount = 50
+        bulletCount = 35
         bulletsCountDiv.textContent = bulletCount
         bulletsCountDiv.parentElement.classList.toggle('hasBlink')
       }, 3000)
