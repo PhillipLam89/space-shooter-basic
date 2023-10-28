@@ -64,7 +64,7 @@ function animate() {
     starsArray.forEach(star => star.update())
 
   }
-  //renders stars in background falling
+  //renders stars in background fallin
 
 
   player.update()
