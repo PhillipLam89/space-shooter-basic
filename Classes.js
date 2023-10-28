@@ -5,7 +5,7 @@ class Player {
     this.opacity = 1
     const image = new Image()
     image.src = imgURL ||
-         './resources/spaceship.png'
+         './everest.JPG'
     image.onload = () => {
       this.image = image
       const scale = .10
