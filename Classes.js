@@ -8,7 +8,7 @@ class Player {
          './everest.JPG'
     image.onload = () => {
       this.image = image
-      const scale = .10
+      const scale = .035
       this.width = image.width * scale
       this.height= image.height * scale
       this.position = {
