@@ -109,8 +109,9 @@ function animate() {
   grids.forEach((grid, gridIndex) => {
     grid.update()
     //spawns invader projectiles
-    const spawnTime = frames % 200 === 0 || frames % 300 === 0
-    if (spawnTime && grid.invaders.length) {
+
+    if ( frames % 200 === 0 ||
+         frames % 200 === 1 && grid.invaders.length) {
       grid.invaders[~~(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
     }
 
