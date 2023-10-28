@@ -22,7 +22,7 @@ const keys = {//monitors keys pressed
   d: {pressed:false},
   space: {pressed: false}
 }
-let bulletCount = 30
+let bulletCount = 20
 bulletsCountDiv.textContent = bulletCount
 let spamCount = 0
 let frames = 0
