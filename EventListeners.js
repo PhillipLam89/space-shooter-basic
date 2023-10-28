@@ -32,8 +32,17 @@ window.addEventListener('keydown', ({key}) => {
       projectiles.push(generatedBullet)
       keys.space.pressed = true
       bulletCount--
+      bulletsCountDiv.textContent = bulletCount
       //when bullet is empty, take 3 seconds to reload ammo
-      !bulletCount && setTimeout(() => bulletCount = 50, 3000)
+      if (!bulletCount) {
+        bulletsCountDiv.parentElement.classList.toggle('hasBlink')
+        bulletsCountDiv.textContent = 'NO AMMO, RELOADING!'
+      }
+      !bulletCount && setTimeout(() => {
+        bulletCount = 50
+        bulletsCountDiv.textContent = bulletCount
+        bulletsCountDiv.parentElement.classList.toggle('hasBlink')
+      }, 3000)
       break;
   }
 })

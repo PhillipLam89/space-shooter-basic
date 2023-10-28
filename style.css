@@ -14,3 +14,20 @@ canvas {
   padding: 1rem;
 
 }
+
+
+.hasBlink {
+  animation: blink .5s infinite;
+  color: red;
+  font-size: 25px;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0
+  }
+
+  100% {
+    opacity: 1
+  }
+}
