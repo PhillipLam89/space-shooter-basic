@@ -8,13 +8,13 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
-      spamCount+= 0.25
+      spamCount+= 0.35
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
-      spamCount+= 0.25
+      spamCount+= 0.35
       keys.d.pressed = true
       break;
     case ' ':
