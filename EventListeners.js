@@ -27,7 +27,7 @@ window.addEventListener('keydown', ({key}) => {
         },
         velocity: {//speed & direction of bullets
           x:0,
-          y:-2
+          y:-6
         }
       })
       projectiles.push(generatedBullet)
