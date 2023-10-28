@@ -83,6 +83,10 @@ class ParticleExplosion {
     this.position.y+= this.velocity.y
   }
 }
+
+function negOrPositive() {
+  return Math.random() < 0.5 ? 1 : -1
+}
 class Invader {
   constructor({imgURL, position}) {
     this.velocity = {x: 0, y:0}
@@ -118,7 +122,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: Math.random() * 2, y:4}
+      velocity: {x: Math.random() * 2 * negOrPositive(), y:3.5}
     }
     ))
 
