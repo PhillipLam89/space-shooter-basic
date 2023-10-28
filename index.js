@@ -2,6 +2,10 @@ const canvas =
 document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+
+const loserSound = new Audio('./resources/audio/loserSound.mp3')
+
+
 const score = document.getElementById('scorePoints')
 
 canvas.width = window.innerWidth
@@ -71,10 +75,6 @@ function animate() {
         invaderProjectiles.splice(index,1)
 
       },0)
-
-      // setTimeout(() => {
-      //   game.active = false
-      // },2000)
     } else projectile.update()
     if (projectile.position.y + projectile.height >= player.position.y
         && projectile.position.x + projectile.width <= player.position.x + player.width
@@ -88,12 +88,16 @@ function animate() {
           player.opacity = 0
           game.over = true
           canvas.style.opacity = 0
+          loserSound.play()
+
           setTimeout(() => {
             canvas.remove()
             document.body.innerHTML = `<h5>YOU LOST YOU SUCK! THANKS FOR PLAYING MR.PHILIP'S GAME! </h5>
                                        <h2>Score: ${score.textContent} Points!</h2>`
             document.body.classList.add('gameLost')
-          }, 2000)
+            loserSound.muted = 'muted'
+
+          }, 2400)
     }
   })
 
