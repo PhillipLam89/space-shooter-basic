@@ -136,7 +136,7 @@ class InvaderProjectile {
     this.height = 50
   }
   draw() {
-    c.fillStyle = 'green'
+    c.fillStyle = 'tomato'
     c.fillRect(this.position.x,
                this.position.y,
                this.width,
