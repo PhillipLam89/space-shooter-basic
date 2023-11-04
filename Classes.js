@@ -122,7 +122,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:3.5}
+      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:4.5}
     }
     ))
 
@@ -156,7 +156,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:2 ,y:0
+      x:4 ,y:0
     }
     this.invaders = []
 
