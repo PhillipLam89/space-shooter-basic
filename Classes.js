@@ -122,7 +122,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:4.5}
+      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:4}
     }
     ))
 

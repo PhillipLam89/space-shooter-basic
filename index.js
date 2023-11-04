@@ -12,6 +12,7 @@ canvas.height = window.innerHeight
 
 
 const player = new Player('https://civilengineering-softstudies.com/wp-content/uploads/2021/06/spaceship_red.png')
+// const player = new Player()
 
 const projectiles = []
 const grids = []
@@ -21,7 +22,7 @@ const keys = {//monitors keys pressed
   d: {pressed:false},
   space: {pressed: false}
 }
-let bulletCount = 30
+let bulletCount = 20
 bulletsCountDiv.textContent = bulletCount
 let spamCount = 0
 let frames = 0
@@ -63,7 +64,7 @@ function animate() {
     starsArray.forEach(star => star.update())
 
   }
-  //renders stars in background falling
+  //renders stars in background fallin
 
 
   player.update()

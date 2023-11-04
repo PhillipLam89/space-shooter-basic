@@ -8,13 +8,13 @@ window.addEventListener('keydown', ({key}) => {
     case 'a':
     case 'A':
     case 'ArrowLeft':
-      spamCount+= 0.25
+      spamCount+= 0.35
       keys.a.pressed = true
       break;
     case 'd':
     case 'D':
     case 'ArrowRight':
-      spamCount+= 0.25
+      spamCount+= 0.35
       keys.d.pressed = true
       break;
     case ' ':
@@ -27,7 +27,7 @@ window.addEventListener('keydown', ({key}) => {
         },
         velocity: {//speed & direction of bullets
           x:0,
-          y:-2
+          y:-6
         }
       })
       projectiles.push(generatedBullet)
@@ -40,10 +40,10 @@ window.addEventListener('keydown', ({key}) => {
         bulletsCountDiv.textContent = 'NO AMMO, RELOADING!'
       } else {shootSound.play()}
       !bulletCount && setTimeout(() => {
-        bulletCount = 30
+        bulletCount = 20
         bulletsCountDiv.textContent = bulletCount
         bulletsCountDiv.parentElement.classList.toggle('hasBlink')
-      }, 3000)
+      }, 5000)
       break;
   }
 })
