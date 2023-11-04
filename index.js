@@ -5,7 +5,6 @@ const c = canvas.getContext('2d')
 
 const loserSound = new Audio('./resources/audio/loserSound.mp3')
 
-
 const score = document.getElementById('scorePoints')
 
 canvas.width = window.innerWidth
@@ -179,9 +178,6 @@ function animate() {
     frames = 0
   }
   frames++
-//  if (game.over) {
-//     document.querySelector('canvas').remove()
-//     alert('LOSER!')
-//  }
+
 }
 animate()

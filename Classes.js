@@ -5,10 +5,10 @@ class Player {
     this.opacity = 1
     const image = new Image()
     image.src = imgURL ||
-         './everest.JPG'
+         './resources/spaceship.png'
     image.onload = () => {
       this.image = image
-      const scale = 0.15
+      const scale = .10
       this.width = image.width * scale
       this.height= image.height * scale
       this.position = {
@@ -122,7 +122,7 @@ class Invader {
     {
       position: {x: this.position.x + this.width*0.5,
                   y: this.position.y + this.height},
-      velocity: {x: Math.random() * 1.1156738 * negOrPositive(), y:4.5}
+      velocity: {x: Math.random() * 1.5 * negOrPositive(), y:4}
     }
     ))
 
@@ -132,11 +132,11 @@ class InvaderProjectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.width = 10
-    this.height = 50
+    this.width = 9
+    this.height = 45
   }
   draw() {
-    c.fillStyle = 'tomato'
+    c.fillStyle = 'red'
     c.fillRect(this.position.x,
                this.position.y,
                this.width,
@@ -156,7 +156,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:2.12 ,y:0
+      x:4 ,y:0
     }
     this.invaders = []
 
