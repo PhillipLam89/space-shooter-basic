@@ -54,10 +54,25 @@ function createParticles({object,color}, explodsionPieces = 5, initX = 0, initY 
 }
 
 
+
+let msPrev = window.performance.now()
+const fps = 60
+const msPerFrame = 1000 / fps
+
 function animate() {
   if (!game.active) return
   requestAnimationFrame(animate)
-  c.fillStyle = 'black'
+  
+//this makes the code below run smoothly for 60FPS monitors AND higher FPS gaming-minitors :D
+  const msNow = window.performance.now()
+  const msPassed = msNow - msPrev
+
+  if (msPassed < msPerFrame) return
+
+  msPrev = msNow
+  //this makes the code above  run smoothly for 60FPS monitors AND higher FPS gaming-minitors :D
+  
+  c.fillStyle = 'magenta'
   c.fillRect(0,0, canvas.width, canvas.height)
   galacticBackgroundStars(2)
   if (starsArray) {
