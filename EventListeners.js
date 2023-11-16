@@ -43,7 +43,7 @@ window.addEventListener('keydown', ({key}) => {
         bulletCount = 20
         bulletsCountDiv.textContent = bulletCount
         bulletsCountDiv.parentElement.classList.toggle('hasBlink')
-      }, 5000)
+      }, 2121)
       break;
   }
 })
