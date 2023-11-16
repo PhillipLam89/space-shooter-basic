@@ -132,11 +132,11 @@ class InvaderProjectile {
   constructor({position, velocity}) {
     this.position = position
     this.velocity = velocity
-    this.width = 9
-    this.height = 45
+    this.width = 12
+    this.height = 60
   }
   draw() {
-    c.fillStyle = 'royalblue'
+    c.fillStyle = 'aqua'
     c.fillRect(this.position.x,
                this.position.y,
                this.width,
@@ -156,7 +156,7 @@ class Grid {
       x:0,y:0
     }
     this.velocity = {
-      x:4 ,y:0
+      x:1.85 ,y:0
     }
     this.invaders = []
 
